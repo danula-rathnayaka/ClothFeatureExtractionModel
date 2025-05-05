@@ -1,0 +1,15 @@
+Metadata-Version: 2.4
+Name: ClothFeatureExtractionModel
+Version: 0.0.0
+Summary: This model will extract the features of a inputted image..
+Home-page: https://github.com/danula-rathnayaka/ClothFeatureExtractionModel
+Author: danula-rathnayaka
+Author-email: danusathmin@gmail.com
+Project-URL: Bug Tracker, https://github.com/danula-rathnayaka/ClothFeatureExtractionModel/issues
+License-File: LICENSE
+Dynamic: author
+Dynamic: author-email
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: summary

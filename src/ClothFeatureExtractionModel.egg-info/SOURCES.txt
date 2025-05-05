@@ -1,0 +1,11 @@
+LICENSE
+README.md
+setup.py
+src/ClothFeatureExtractionModel.egg-info/PKG-INFO
+src/ClothFeatureExtractionModel.egg-info/SOURCES.txt
+src/ClothFeatureExtractionModel.egg-info/dependency_links.txt
+src/ClothFeatureExtractionModel.egg-info/top_level.txt
+src/ClothFeatureExtractor/__init__.py
+src/ClothFeatureExtractor/config/__init__.py
+src/ClothFeatureExtractor/config/configuration.py
+src/ClothFeatureExtractor/pipeline/__init__.py
