@@ -1,0 +1,8 @@
+artifacts_root: data
+
+
+data_ingestion:
+  root_dir: data/raw
+  source_URL: # TODO: Add the path of the zip file in google drive, with anyone with the link access
+  local_data_file: data/raw/data.zip
+  unzip_dir: data/raw

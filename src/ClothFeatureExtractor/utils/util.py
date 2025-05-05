@@ -6,13 +6,11 @@ import yaml
 from src.ClothFeatureExtractor import logger
 import json
 import joblib
-from ensure import ensure_annotations
 from box import ConfigBox
 from typing import Any
 import base64
 
 
-@ensure_annotations
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """
     Read config from yaml file
@@ -31,7 +29,6 @@ def read_yaml(path_to_yaml: Path) -> ConfigBox:
         raise e
 
 
-@ensure_annotations
 def create_directories(path_to_directories: list, verbose=True) -> None:
     """
     Create a list of directories
@@ -46,7 +43,6 @@ def create_directories(path_to_directories: list, verbose=True) -> None:
         logger.info(f"Directory created at: {path_to_directories}")
 
 
-@ensure_annotations
 def save_json(path: Path, data: dict) -> None:
     """
     Save data to json file
@@ -61,7 +57,6 @@ def save_json(path: Path, data: dict) -> None:
     logger.info(f"Data saved at: {path}")
 
 
-@ensure_annotations
 def save_bins(path: Path, data: Any):
     """
     Save data to a binary file
@@ -72,7 +67,6 @@ def save_bins(path: Path, data: Any):
     logger.info(f"Binary saved at: {path}")
 
 
-@ensure_annotations
 def load_bins(path: Path) -> Any:
     """
     Load binary data from file
@@ -84,7 +78,6 @@ def load_bins(path: Path) -> Any:
     return data
 
 
-@ensure_annotations
 def get_size(path: Path) -> str:
     """
     Get size in Kb

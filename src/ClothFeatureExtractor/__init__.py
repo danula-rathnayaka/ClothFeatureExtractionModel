@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 from datetime import datetime
+from pathlib import Path
 
 logging_str = "[%(asctime)s: %(levelname)s: %(module)s: %(message)s]"
 
@@ -19,3 +20,4 @@ logging.basicConfig(
 )
 
 logger = logging.getLogger("Logger")
+path_to_root = Path("../../../")
