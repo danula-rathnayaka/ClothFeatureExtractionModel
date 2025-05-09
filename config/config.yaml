@@ -3,6 +3,8 @@ artifacts_root: data
 
 data_ingestion:
   root_dir: data/raw
-  source_URL: # TODO: Add the path of the zip file in google drive, with anyone with the link access
-  local_data_file: data/raw/data.zip
+  img_source_URL: https://drive.google.com/file/d/1U2PljA7NE57jcSSzPs21ZurdIPXdYZtN/view
+  label_source_URL: https://drive.google.com/file/d/11WoM5ZFwWpVjrIvZajW0g8EmQCNKMAWH/view
+  local_img_data_file: data/raw/data.zip
+  local_label_data_file: data/raw/labels.zip
   unzip_dir: data/raw

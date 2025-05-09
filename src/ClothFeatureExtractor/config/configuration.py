@@ -22,7 +22,9 @@ class ConfigurationManager:
 
         return DataIngestionConfig(
             root_dir=config.root_dir,
-            source_URL=config.source_URL,
-            local_data_file=config.local_data_file,
+            img_source_URL=config.img_source_URL,
+            label_source_URL=config.label_source_URL,
+            local_img_data_file=config.local_img_data_file,
+            local_label_data_file=config.local_label_data_file,
             unzip_dir=config.unzip_dir
         )
