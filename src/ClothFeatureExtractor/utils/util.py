@@ -9,6 +9,7 @@ import joblib
 from box import ConfigBox
 from typing import Any
 import base64
+import tensorflow as tf
 
 
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
@@ -108,3 +109,13 @@ def encode_image_into_base64(cropped_img_path):
     """
     with open(cropped_img_path, "rb") as f:
         return base64.b64encode(f.read())
+
+
+def save_model(path: Path, model: tf.keras.Model):
+    """
+    Saves a TensorFlow Keras model to the specified path..
+
+    :param path: Path to the file.
+    :param model: The Keras model instance to be saved.
+    """
+    model.save(path)

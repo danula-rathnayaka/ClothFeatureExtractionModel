@@ -1,6 +1,8 @@
+from pathlib import Path
+
 from ClothFeatureExtractor.constants import CONFIG_FILE_PATH, PARAMS_FILE_PATH
 from ClothFeatureExtractor.utils.util import read_yaml, create_directories
-from ClothFeatureExtractor.entity.config_entity import DataIngestionConfig
+from ClothFeatureExtractor.entity.config_entity import DataIngestionConfig, PrepareBaseModelConfig
 from ClothFeatureExtractor import path_to_root
 
 
@@ -27,4 +29,20 @@ class ConfigurationManager:
             local_img_data_file=config.local_img_data_file,
             local_label_data_file=config.local_label_data_file,
             unzip_dir=config.unzip_dir
+        )
+
+    def get_prepare_base_model_config(self) -> PrepareBaseModelConfig:
+        config = self.config.prepare_base_model
+
+        create_directories([config.root_dir])
+
+        return PrepareBaseModelConfig(
+            root_dir=Path(config.root_dir),
+            base_model_path=Path(config.base_model_path),
+            updated_base_model_path=Path(config.updated_base_model_path),
+            params_image_size=self.params.IMAGE_SIZE,
+            params_learning_rate=self.params.LEARNING_RATE,
+            params_include_top=self.params.INCLUDE_TOP,
+            params_weights=self.params.WEIGHTS,
+            params_classes=self.params.CLASSES
         )
