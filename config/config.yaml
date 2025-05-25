@@ -1,0 +1,22 @@
+artifacts_root: data
+
+
+data_ingestion:
+  root_dir: data/raw
+  img_source_URL: https://drive.google.com/file/d/1U2PljA7NE57jcSSzPs21ZurdIPXdYZtN/view
+  label_source_URL: https://drive.google.com/file/d/11WoM5ZFwWpVjrIvZajW0g8EmQCNKMAWH/view
+  local_img_data_file: data/raw/data.zip
+  local_label_data_file: data/raw/labels.zip
+  unzip_dir: data/raw
+
+
+prepare_base_model:
+  root_dir: models
+  base_model_path: models/tflite/base_model.h5
+  updated_base_model_path: models/saved_models/cloth_feature_extraction_model.h5
+
+
+training:
+  root_dir: data/raw
+  trained_model_path: models/saved_models/cloth_feature_extraction_model_trained.h5
+  label_files: [ "data/raw/labels/labels/shape/shape_anno_all.txt", "data/raw/labels/labels/texture/fabric_ann.txt", "data/raw/labels/labels/texture/pattern_ann.txt" ]
