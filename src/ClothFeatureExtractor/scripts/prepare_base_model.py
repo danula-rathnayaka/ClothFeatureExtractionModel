@@ -21,7 +21,7 @@ class PrepareBaseModel:
 
     @staticmethod
     def _prepare_full_model(model, classes, freeze_all, freeze_till, learning_rate):
-        # Freeze layers as before
+        # Freeze layers
         if freeze_all:
             for layer in model.layers:
                 layer.trainable = False
@@ -34,6 +34,7 @@ class PrepareBaseModel:
             for layer in model.layers:
                 layer.trainable = True
 
+        # Shared trunk
         x = tf.keras.layers.GlobalAveragePooling2D()(model.output)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dropout(0.4)(x)
@@ -42,19 +43,22 @@ class PrepareBaseModel:
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dropout(0.3)(x)
 
+        # Create each output head using its specific class count
         outputs = []
-        for _ in range(18):
+        for num_classes in classes:
             head = tf.keras.layers.Dense(128, activation='relu',
                                          kernel_regularizer=tf.keras.regularizers.l2(1e-4))(x)
             head = tf.keras.layers.Dropout(0.3)(head)
-            out = tf.keras.layers.Dense(classes, activation='softmax')(head)
+            out = tf.keras.layers.Dense(num_classes, activation='softmax')(head)
             outputs.append(out)
 
+        # Create the model
         full_model = tf.keras.models.Model(inputs=model.input, outputs=outputs)
 
+        # Compile with separate losses for each output
         full_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-            loss=[tf.keras.losses.SparseCategoricalCrossentropy()] * 18,
+            loss=[tf.keras.losses.SparseCategoricalCrossentropy()] * len(classes),
             metrics=["accuracy"]
         )
 
