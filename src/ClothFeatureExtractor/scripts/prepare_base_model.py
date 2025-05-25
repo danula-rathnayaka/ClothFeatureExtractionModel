@@ -21,6 +21,7 @@ class PrepareBaseModel:
 
     @staticmethod
     def _prepare_full_model(model, classes, freeze_all, freeze_till, learning_rate):
+        # Freeze layers as before
         if freeze_all:
             for layer in model.layers:
                 layer.trainable = False
@@ -36,16 +37,24 @@ class PrepareBaseModel:
         x = tf.keras.layers.GlobalAveragePooling2D()(model.output)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dropout(0.4)(x)
-        x = tf.keras.layers.Dense(256, activation='relu')(x)
+        x = tf.keras.layers.Dense(256, activation='relu',
+                                  kernel_regularizer=tf.keras.regularizers.l2(1e-4))(x)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dropout(0.3)(x)
-        output = tf.keras.layers.Dense(classes, activation='sigmoid')(x)
 
-        full_model = tf.keras.models.Model(inputs=model.input, outputs=output)
+        outputs = []
+        for _ in range(18):
+            head = tf.keras.layers.Dense(128, activation='relu',
+                                         kernel_regularizer=tf.keras.regularizers.l2(1e-4))(x)
+            head = tf.keras.layers.Dropout(0.3)(head)
+            out = tf.keras.layers.Dense(classes, activation='softmax')(head)
+            outputs.append(out)
+
+        full_model = tf.keras.models.Model(inputs=model.input, outputs=outputs)
 
         full_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-            loss=tf.keras.losses.BinaryCrossentropy(),
+            loss=[tf.keras.losses.SparseCategoricalCrossentropy()] * 18,
             metrics=["accuracy"]
         )
 

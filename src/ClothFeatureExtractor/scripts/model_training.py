@@ -58,7 +58,10 @@ class Training:
             label = tf.py_function(lambda f: label_map[f.numpy().decode()], [filename], tf.int32)
             label.set_shape([len(next(iter(label_map.values())))])
 
-            return image, label
+            # Split label vector into list of scalars, one per output
+            label_list = tf.unstack(label)
+
+            return image, label_list
 
         ds = tf.data.Dataset.from_tensor_slices(image_paths)
         ds = ds.map(load_and_preprocess, num_parallel_calls=tf.data.AUTOTUNE)
@@ -78,11 +81,15 @@ class Training:
         self.valid_generator = self._load_dataset(self.config.training_data, label_map, split="val")
 
     def train(self):
+
+        self.steps_per_epoch = self.train_generator.samples // self.train_generator.batch_size
+        self.validation_steps = self.valid_generator.samples // self.valid_generator.batch_size
+
         self.model.fit(
             self.train_generator,
             epochs=self.config.params_epochs,
-            steps_per_epoch=len(self.train_generator),
-            validation_steps=len(self.valid_generator),
+            steps_per_epoch=self.steps_per_epoch,
+            validation_steps=self.validation_steps,
             validation_data=self.valid_generator
         )
 
