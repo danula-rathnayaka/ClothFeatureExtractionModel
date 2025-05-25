@@ -1,3 +1,4 @@
+from ClothFeatureExtractor import path_to_root
 from ClothFeatureExtractor.entity.config_entity import PrepareBaseModelConfig
 import tensorflow as tf
 
@@ -16,7 +17,7 @@ class PrepareBaseModel:
             include_top=self.config.params_include_top
         )
 
-        save_model(path=self.config.base_model_path, model=self.model)
+        save_model(path=path_to_root / self.config.base_model_path, model=self.model)
 
     @staticmethod
     def _prepare_full_model(model, classes, freeze_all, freeze_till, learning_rate):
@@ -38,13 +39,13 @@ class PrepareBaseModel:
         x = tf.keras.layers.Dense(256, activation='relu')(x)
         x = tf.keras.layers.BatchNormalization()(x)
         x = tf.keras.layers.Dropout(0.3)(x)
-        output = tf.keras.layers.Dense(classes, activation='softmax')(x)
+        output = tf.keras.layers.Dense(classes, activation='sigmoid')(x)
 
         full_model = tf.keras.models.Model(inputs=model.input, outputs=output)
 
         full_model.compile(
             optimizer=tf.keras.optimizers.Adam(learning_rate=learning_rate),
-            loss=tf.keras.losses.CategoricalCrossentropy(),
+            loss=tf.keras.losses.BinaryCrossentropy(),
             metrics=["accuracy"]
         )
 
@@ -63,5 +64,5 @@ class PrepareBaseModel:
             learning_rate=learning_rate
         )
 
-        save_model(path=self.config.updated_base_model_path, model=full_model)
+        save_model(path=path_to_root / self.config.updated_base_model_path, model=full_model)
         return full_model
